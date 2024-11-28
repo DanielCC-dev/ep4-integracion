@@ -7,12 +7,63 @@ const getCategoria = async(req, res) => {
         const categoria = await Categoria.findById(id);
         console.log(categoria);
 
-        res.send(categoria);
+        res.send("Categoría encontrada: ", categoria);
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
 
+const deleteCategoria = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const categoria = await Categoria.deleteOne({ _id: id });
+        console.log(categoria);
+
+        res.send("Categoría eliminada correctamente: ", categoria);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+const addCategoria = async (req, res) => {
+    try {
+        const { nombre, descripcion } = req.query; 
+
+        const nuevaCategoria = await Categoria.create({
+            nombre,
+            descripcion
+        });
+
+        console.log("Categoría agregada: ", nuevaCategoria);
+        res.status(201).send(nuevaCategoria); 
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+const updateCategoria = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const { nombre, descripcion } = req.body; 
+
+        const categoriaActualizada = await Categoria.findByIdAndUpdate(
+            id, 
+            { nombre, descripcion },
+            { new: true, runValidators: true } 
+        );
+
+        console.log("Categoría actualizada: ", categoriaActualizada);
+        res.status(200).send(categoriaActualizada);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
 module.exports = {
-    getCategoria
+    getCategoria,
+    deleteCategoria,
+    addCategoria,
+    updateCategoria
 };
