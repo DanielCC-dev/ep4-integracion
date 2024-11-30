@@ -1,23 +1,26 @@
 const Orden = require('../models/orden');
 
-// Obtener detalles de una orden por ID
 const getOrden = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { idMesa } = req.params;
 
-        const orden = await Orden.findById(id);
+        const orden = await Orden.findOne(idMesa);
+
+        if (!orden) {
+            return res.status(404).json({ message: "Orden no encontrada" });
+        }
+
         console.log(orden);
 
-        res.send("Orden encontrada: ", orden);
+        res.json("Orden encontrada: ", orden);
     } catch (error) {
         res.status(500).send(error.message);
     }
 };
 
-// Crear una nueva orden
 const addOrden = async (req, res) => {
     try {
-        const { idMesa, platillos, estado } = req.query; // Se usará req.query como en el ejemplo de categoría
+        const { idMesa, platillos, estado } = req.body; 
 
         const nuevaOrden = await Orden.create({
             idMesa,
@@ -26,17 +29,16 @@ const addOrden = async (req, res) => {
         });
 
         console.log("Orden creada: ", nuevaOrden);
-        res.status(201).send(nuevaOrden); // Respuesta igual al ejemplo
+        res.status(201).send(nuevaOrden); 
     } catch (error) {
         res.status(500).send(error.message);
     }
 };
 
-// Actualizar el estado de una orden
 const updateOrden = async (req, res) => {
     try {
         const { id } = req.params;
-        const { estado } = req.body; // Se mantiene req.body aquí para enviar datos más estructurados
+        const { estado } = req.body; 
 
         const ordenActualizada = await Orden.findByIdAndUpdate(
             id,
@@ -51,7 +53,6 @@ const updateOrden = async (req, res) => {
     }
 };
 
-// Eliminar una orden
 const deleteOrden = async (req, res) => {
     try {
         const { id } = req.params;

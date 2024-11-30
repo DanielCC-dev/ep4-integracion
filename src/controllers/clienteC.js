@@ -38,8 +38,8 @@ const updateCliente = async (req, res) => {
 const deleteCliente = async (req, res) => {
     try {
         const { id } = req.params;
-        await Cliente.deleteOne({ _id: id });
-        res.send("Cliente eliminado correctamente.");
+        const cliente = await Cliente.deleteOne({ _id: id });
+        res.send("Cliente eliminado correctamente.", cliente);
     } catch (error) {
         res.status(500).send(error.message);
     }

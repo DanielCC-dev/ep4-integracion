@@ -3,7 +3,7 @@ const { getCategoria, deleteCategoria, addCategoria, updateCategoria } = require
 
 const router = express.Router();
 
-router.get("/api/categoria/:id", getCategoria);
+router.get("/api/categoria", getCategoria);
 router.post("/api/addCategoria", addCategoria);
 router.delete("/api/deleteCategoria/:id", deleteCategoria);
 router.put("/api/updateCategoria/:id", updateCategoria);

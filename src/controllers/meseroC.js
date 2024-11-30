@@ -26,14 +26,13 @@ const addMesero = async (req, res) => {
 // Obtener todos los meseros
 const getAllMeseros = async (req, res) => {
   try {
-    const meseros = await Mesero.find({ activo: true }); // Solo los activos
-    res.status(200).send(meseros);
+    const meseros = await Mesero.find({ activo: true }); 
+    res.status(200).json({ message: "meseros encontrados", data: meseros });
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
-// Actualizar datos de un mesero
 const updateMesero = async (req, res) => {
   try {
     const { id } = req.params;
@@ -41,7 +40,6 @@ const updateMesero = async (req, res) => {
 
     let updateData = { nombre, correo, telefono };
 
-    // Si se proporciona una nueva contraseña, también se encripta
     if (contraseña) {
       updateData.contraseña = jwt.sign({ contraseña }, 'jwt');
     }
